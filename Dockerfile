@@ -12,6 +12,7 @@ COPY pyproject.toml uv.lock ./
 RUN uv sync --frozen --no-dev --no-install-project
 
 COPY src ./src
+COPY deploy/known_hosts ./deploy/known_hosts
 RUN uv sync --frozen --no-dev
 
 ENV PYTHONUNBUFFERED=1 \

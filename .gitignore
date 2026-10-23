@@ -20,8 +20,8 @@ data/
 logs/
 *.log
 
-# Tailscale node state
-tailscale/
+# Tailscale node state (deploy/tailscale/ holds tracked config)
+/tailscale/
 
 # Never commit a vault checkout
 /vault/
