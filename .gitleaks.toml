@@ -1,0 +1,8 @@
+# Gitleaks configuration.
+#
+# Extends the built-in default ruleset. Keep it minimal: add allowlist entries
+# only for genuine false positives that cannot be avoided by rewording the code,
+# and give every entry a comment explaining why it is safe.
+
+[extend]
+useDefault = true

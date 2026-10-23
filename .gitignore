@@ -1,0 +1,48 @@
+# Secrets: only .env.example is tracked
+.env
+.env.*
+!.env.example
+*.pem
+*_deploy_key
+*_deploy_key.pub
+id_ed25519*
+id_rsa*
+
+# Runtime data (SQLite, converted books, uploads, logs)
+data/
+books/
+*.db
+*.db-*
+*.sqlite
+*.sqlite3
+*.sqlite-*
+*.pdf
+logs/
+*.log
+
+# Tailscale node state
+tailscale/
+
+# Never commit a vault checkout
+vault/
+
+# Local tooling and scratch space
+.cache/
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+dist/
+build/
+*.egg-info/
+
+# Editors and OS
+.idea/
+.vscode/
+.DS_Store
