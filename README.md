@@ -40,11 +40,14 @@ See [PLAN.md](PLAN.md) for the full file format and architecture.
 
 ## Getting started
 
-Curio is under active development; a self-hosting guide follows with the first release.
-To run it locally with a fake language model:
+To deploy Curio on your own server with Docker, Tailscale and a GPU-backed converter,
+see [docs/self-hosting.md](docs/self-hosting.md).
+
+### Run locally
 
 ```sh
 uv sync
+scripts/dev-vault.sh
 LLM_PROVIDER=fake DATA_PATH=./.cache/dev-data VAULT_PATH=./.cache/dev-vault \
   uv run uvicorn curio_app.main:create_app --factory --reload
 ```
