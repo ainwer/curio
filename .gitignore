@@ -10,7 +10,7 @@ id_rsa*
 
 # Runtime data (SQLite, converted books, uploads, logs)
 data/
-books/
+/books/
 *.db
 *.db-*
 *.sqlite
@@ -24,7 +24,7 @@ logs/
 tailscale/
 
 # Never commit a vault checkout
-vault/
+/vault/
 
 # Local tooling and scratch space
 .cache/

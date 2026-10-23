@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from curio import db
+from curio_app import db
 
 _TABLES = {
     "books",

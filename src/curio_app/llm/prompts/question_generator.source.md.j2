@@ -1,0 +1,10 @@
+<chapter book="{{ book_title }}" number="{{ chapter_number }}" title="{{ chapter_title }}">
+{{ chapter_text }}
+</chapter>
+
+Write 8–10 question cards grounded in this chapter. Each must be answerable with the chapter's
+content plus reasoning, and set source to "{{ book_title }}, ch. {{ chapter_number }}".
+Skip the chapter's trivial definitions; aim at mechanisms, magnitudes and design tradeoffs.
+{% if existing %}Avoid duplicating these existing questions:
+{% for q in existing %}- {{ q }}
+{% endfor %}{% endif %}

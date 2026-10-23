@@ -16,7 +16,7 @@ Python 3.12, FastAPI, Jinja2, HTMX 2 (+ SSE extension), SQLite (stdlib `sqlite3`
 
 ## Layout
 
-See PLAN.md §3. Source in `src/curio/`, tests in `tests/`, converter service in
+See PLAN.md §3. Source in `src/curio_app/`, tests in `tests/`, converter service in
 `converter/`, deployment files in `deploy/` and `docker-compose.yml`.
 
 ## Commands
@@ -27,7 +27,7 @@ uv run ruff check . && uv run ruff format --check .
 uv run mypy
 uv run pytest -q
 LLM_PROVIDER=fake DATA_PATH=./.cache/dev-data VAULT_PATH=./.cache/dev-vault \
-  uv run uvicorn curio.main:create_app --factory --reload
+  uv run uvicorn curio_app.main:create_app --factory --reload
 ```
 
 All four checks must pass before every commit.

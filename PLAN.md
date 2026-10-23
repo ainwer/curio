@@ -94,7 +94,7 @@ curio/
 │   └── known_hosts            # github.com public host keys (public data)
 ├── converter/                 # separate image: Docling + tiny FastAPI
 │   ├── Dockerfile  pyproject.toml  app.py
-├── src/curio/
+├── src/curio_app/
 │   ├── main.py                # create_app(): routers, static, exception handlers
 │   ├── config.py              # pydantic-settings Settings (SecretStr for all secrets)
 │   ├── logging.py             # redaction filter, JSON-free plain logging
@@ -502,7 +502,7 @@ Prompt templates are written by the architect and handed to the coder verbatim.
 schema, `main.py`, `base.html` with tab bar, `app.css`, vendored `htmx.min.js` + `sse.js` + KaTeX,
 manifest + icons + `sw.js`, `/healthz`, `Dockerfile` (non-root user, `git`, `openssh-client`), CI job
 (ruff, mypy, pytest).
-- AC: `uv run uvicorn curio.main:create_app --factory` serves an empty Inbox page at 390 px width;
+- AC: `uv run uvicorn curio_app.main:create_app --factory` serves an empty Inbox page at 390 px width;
   `/healthz` → `{"status":"ok"}`; Lighthouse-style PWA basics present (manifest, icons, theme color).
 - Tests: settings load from env; `repr(settings)` and log output never contain secret values;
   migrations idempotent and set `user_version`; health route; exception handler hides details.

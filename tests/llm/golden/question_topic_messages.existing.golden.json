@@ -1,0 +1,6 @@
+[
+  {
+    "content": "Topic: Switching Losses\n\nWrite 8–10 question cards about this topic, ordered from foundational to advanced.\nSet source to null. Avoid duplicating these existing questions:\n- Why do diodes get hot in forward mode?\n- How much current flows backwards?",
+    "role": "user"
+  }
+]

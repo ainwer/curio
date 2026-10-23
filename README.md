@@ -46,7 +46,7 @@ To run it locally with a fake language model:
 ```sh
 uv sync
 LLM_PROVIDER=fake DATA_PATH=./.cache/dev-data VAULT_PATH=./.cache/dev-vault \
-  uv run uvicorn curio.main:create_app --factory --reload
+  uv run uvicorn curio_app.main:create_app --factory --reload
 ```
 
 ## Development

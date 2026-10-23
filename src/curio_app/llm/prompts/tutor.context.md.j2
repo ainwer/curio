@@ -1,0 +1,17 @@
+<question>{{ question }}</question>
+<concepts>{{ concepts | join(", ") }}</concepts>
+<gut_answer>{{ gut_answer }}</gut_answer>
+<book_excerpts>
+{% for e in excerpts %}<excerpt book="{{ e.book }}" chapter="{{ e.chapter }}" section="{{ e.section }}">
+{{ e.text }}
+</excerpt>
+{% else %}None found.{% endfor %}
+</book_excerpts>
+<vault_notes>
+{% for n in notes %}<note title="{{ n.title }}">
+{{ n.text }}
+</note>
+{% else %}None linked.{% endfor %}
+</vault_notes>
+
+This is my gut answer above. Start.

@@ -5,8 +5,8 @@ from pathlib import Path
 import pytest
 from fastapi.testclient import TestClient
 
-from curio.config import Settings
-from curio.main import create_app
+from curio_app.config import Settings
+from curio_app.main import create_app
 
 TEST_SECRET = "sk-test-not-real-0000"
 

@@ -1,0 +1,6 @@
+[
+  {
+    "content": "<question>Why does reverse recovery make converters get hot?</question>\n<gut_answer>I guess the current flows backwards and heats something.</gut_answer>\n<transcript>\n<user>I guess the current flows backwards and heats something.</user>\n<assistant>Right direction; the stored charge explains the shape.</assistant>\n</transcript>",
+    "role": "user"
+  }
+]

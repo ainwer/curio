@@ -1,0 +1,9 @@
+{% if focus %}Focus on this new area: {{ focus }}{% else %}Pick new areas adjacent to the profile.{% endif %}
+
+Write 5–8 bridge questions. A bridge question connects something the learner does NOT know yet
+to an area the knowledge profile says they know well, so the known area becomes the entry point
+(e.g. "In <known system>, why does <new concept> force <observable design choice>?").
+Set bridge_from to the known area each question builds on. Set source to null.
+{% if existing %}Avoid duplicating these existing questions:
+{% for q in existing %}- {{ q }}
+{% endfor %}{% endif %}
