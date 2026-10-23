@@ -1,0 +1,5 @@
+<question>{{ question }}</question>
+<gut_answer>{{ gut_answer }}</gut_answer>
+<transcript>
+{% for m in messages %}<{{ m.role }}>{{ m.content }}</{{ m.role }}>
+{% endfor %}</transcript>

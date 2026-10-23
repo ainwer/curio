@@ -1,0 +1,13 @@
+<div class="book-status">
+  <p class="muted">
+    <span class="chip state-chip state-{{ book.state }}">{{ book.state }}</span>
+  </p>
+  {% if book.state == 'failed' %}
+  <div class="alert alert-error" role="alert">
+    <p>{{ book.error or "Conversion failed." }}</p>
+  </div>
+  <form method="post" action="/books/{{ book.id }}/retry">
+    <button type="submit" class="btn">Retry conversion</button>
+  </form>
+  {% endif %}
+</div>

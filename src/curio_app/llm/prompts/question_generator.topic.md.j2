@@ -1,0 +1,6 @@
+Topic: {{ topic }}
+
+Write 8–10 question cards about this topic, ordered from foundational to advanced.
+Set source to null. {% if existing %}Avoid duplicating these existing questions:
+{% for q in existing %}- {{ q }}
+{% endfor %}{% endif %}

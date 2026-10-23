@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}{{ book.title }}{% endblock %}
+
+{% block content %}
+<section class="card stack">
+  <h2 class="section-title book-title">{{ book.title }}</h2>
+  {% include "partials/book_status.html" %}
+</section>
+{% if book.state == 'ready' %}
+<h2 class="section-title">Chapters</h2>
+{% if chapters %}
+<ul class="chapter-list">
+  {% for chapter in chapters %}
+  <li class="card chapter-row">
+    <a href="/generate?chapter={{ chapter.chapter_id }}">
+      <span>Ch. {{ chapter.number }} &middot; {{ chapter.title }}</span>
+      <span class="chapter-meta">~{{ chapter.minutes }} min read</span>
+    </a>
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<div class="empty-state">
+  <p>No chapters were found in this book.</p>
+</div>
+{% endif %}
+{% endif %}
+{% endblock %}

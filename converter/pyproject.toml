@@ -1,0 +1,17 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "curio-converter"
+version = "0.1.0"
+description = "Docling PDF to Markdown conversion service for Curio."
+requires-python = ">=3.12"
+dependencies = [
+    "docling==2.142.1",
+    "fastapi",
+    "uvicorn",
+]
+
+[tool.hatch.build.targets.wheel]
+include = ["app.py"]

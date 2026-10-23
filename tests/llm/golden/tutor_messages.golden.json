@@ -1,0 +1,28 @@
+[
+  {
+    "content": [
+      {
+        "cache": true,
+        "text": "<question>Why does reverse recovery make converters get hot?</question>\n<concepts>reverse-recovery, switching-losses</concepts>\n<gut_answer>I guess the current flows backwards and heats something.</gut_answer>\n<book_excerpts>\n<excerpt book=\"Invented Book\" chapter=\"3\" section=\"Diodes\">\nInvented excerpt about reverse recovery.\n</excerpt>\n<excerpt book=\"Invented Book\" chapter=\"7\" section=\"Topologies\">\nInvented excerpt about half-bridge topologies.\n</excerpt>\n\n</book_excerpts>\n<vault_notes>\n<note title=\"Reverse-Recovery\">\nInvented note summary.\n</note>\n<note title=\"Half-Bridge\">\nInvented half-bridge notes.\n</note>\n\n</vault_notes>\n\nThis is my gut answer above. Start.",
+        "type": "text"
+      }
+    ],
+    "role": "user"
+  },
+  {
+    "content": "Right idea: think stored charge. Where does it have to go first?",
+    "role": "assistant"
+  },
+  {
+    "content": "It has to leave the diode?\n\nAnd how quickly does it leave?",
+    "role": "user"
+  },
+  {
+    "content": "Exactly. What sets the amount of charge?",
+    "role": "assistant"
+  },
+  {
+    "content": "The forward current times something? I will guess the forward current.",
+    "role": "user"
+  }
+]

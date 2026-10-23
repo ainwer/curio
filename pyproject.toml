@@ -1,0 +1,55 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "curio-app"
+version = "0.1.0"
+description = "Question-driven learning system backed by an Obsidian vault."
+requires-python = ">=3.12"
+dependencies = [
+    "anthropic",
+    "fastapi",
+    "httpx",
+    "openai",
+    "pyyaml",
+    "uvicorn[standard]",
+    "jinja2",
+    "pydantic-settings",
+    "python-multipart",
+    "markdown-it-py",
+]
+
+[dependency-groups]
+dev = [
+    "pytest",
+    "pytest-asyncio",
+    "types-PyYAML",
+    "mypy",
+    "ruff",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/curio_app"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+# Markdown code blocks are documentation (PLAN.md prompts are verbatim); never reformat them.
+extend-exclude = ["*.md"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "SIM", "S", "RUF"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101", "S105"]
+"src/curio_app/db.py" = ["E501"]
+
+[tool.mypy]
+strict = true
+plugins = ["pydantic.mypy"]
+files = ["src"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]

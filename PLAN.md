@@ -1,4 +1,4 @@
-# Lernsystem MVP: Plan
+# Curio MVP: Plan
 
 Question-driven learning web app: draw a question card, write a gut answer, research it with a
 Socratic AI tutor, then distill 2–3 curated knowledge cards into an Obsidian vault (Git).
@@ -14,7 +14,7 @@ Status: draft for review. All code, docs, UI and generated content are English.
 | Tooling | `uv` (lockfile), `ruff` (lint + format), `mypy --strict` on `src/`, `pytest` | One fast toolchain, reproducible |
 | Source of truth | **Vault** for questions and cards; **SQLite** only for app state (suggestions, chats, wrap-up drafts, books, failed writes) | Questions created or edited in Obsidian show up in the app; no sync logic |
 | Vault checkout | A **dedicated clone** of the vault repo, used only by the app | `git pull --rebase` needs a clean tree; no autostash, no surprises |
-| Git | `git` CLI via `subprocess`, author `lernsystem <lernsystem@localhost>`, SSH deploy key mounted read-only, pinned `known_hosts` | Simple, testable against local bare repos |
+| Git | `git` CLI via `subprocess`, author `curio <curio@localhost>`, SSH deploy key mounted read-only, pinned `known_hosts` | Simple, testable against local bare repos |
 | PDF conversion | Separate `converter` container: Docling with formula enrichment (LaTeX), NVIDIA GPU | Keeps the heavy PyTorch image out of the app; app stays small and testable |
 | Chapter split + search | In the app (pure Python): split Markdown on headings; BM25 over sections | Testable without Docling; no vector store in the MVP |
 | LLM | Provider interface with `anthropic` (default, `claude-sonnet-5-5`), `openai_compatible`, `fake` (dev/tests) | Configurable via env; workers and CI never need a key |
@@ -46,7 +46,7 @@ iPhone / Mac ──tailnet HTTPS──▶ tailscale (serve :443 → 127.0.0.1:80
   (`{"state": "converting|done|failed", "error": null, "pages": 0, "progress": 0.0}`).
   The app polls `status.json` (HTMX polling every 5 s while converting), then splits chapters itself.
 - Books live only in the data volume. The data volume path is outside the app repo
-  (`DATA_PATH`, e.g. `/opt/lernsystem-data`) and `data/` is git-ignored as a second guard.
+  (`DATA_PATH`, e.g. `/opt/curio-data`) and `data/` is git-ignored as a second guard.
 
 ### Request flows
 
@@ -69,20 +69,20 @@ with vault_lock:                      # asyncio.Lock + fcntl lock file, one writ
     git pull --rebase                 # on failure: git rebase --abort → raise VaultConflict
     write file(s)
     git add -- <paths>
-    git commit --author="lernsystem <lernsystem@localhost>" -m "<msg>" -- <paths>
+    git commit --author="curio <curio@localhost>" -m "<msg>" -- <paths>
     git push                          # rejected (non-fast-forward): one more pull --rebase + push,
                                       # then raise VaultPushRejected
 ```
 - `GIT_SSH_COMMAND="ssh -i /run/secrets/vault_deploy_key -o IdentitiesOnly=yes -o UserKnownHostsFile=/app/deploy/known_hosts -o StrictHostKeyChecking=yes"`.
-- Also set `user.name`/`user.email` via `-c` so the committer is `lernsystem` too.
+- Also set `user.name`/`user.email` via `-c` so the committer is `curio` too.
 - Dirty tree before pull (someone edited the clone) → `VaultDirty`, reported, no write.
-- Commit messages: `lernsystem: add question <id>`, `lernsystem: gut answer <id>`, `lernsystem: cards <id>`.
+- Commit messages: `curio: add question <id>`, `curio: gut answer <id>`, `curio: cards <id>`.
 - Errors shown in the UI contain the Git stderr **after** redaction (see Security).
 
 ## 3. Repository layout
 
 ```
-lernsystem/
+curio/
 ├── AGENTS.md                  # architecture map + commands for coder agents
 ├── PLAN.md  README.md  SECURITY.md  CHANGELOG.md  LICENSE (MIT)
 ├── .env.example  .gitignore  .gitleaks.toml  .pre-commit-config.yaml  .editorconfig
@@ -94,7 +94,7 @@ lernsystem/
 │   └── known_hosts            # github.com public host keys (public data)
 ├── converter/                 # separate image: Docling + tiny FastAPI
 │   ├── Dockerfile  pyproject.toml  app.py
-├── src/lernsystem/
+├── src/curio_app/
 │   ├── main.py                # create_app(): routers, static, exception handlers
 │   ├── config.py              # pydantic-settings Settings (SecretStr for all secrets)
 │   ├── logging.py             # redaction filter, JSON-free plain logging
@@ -207,10 +207,10 @@ Migrations: ordered list of SQL scripts; `PRAGMA user_version` = applied count; 
 ```
 # Tailscale (one-time auth key; remove after first start)
 TS_AUTHKEY=
-TS_HOSTNAME=lernsystem
+TS_HOSTNAME=curio
 # Host paths
 VAULT_PATH=/path/to/dedicated/vault-clone
-DATA_PATH=/path/to/lernsystem-data
+DATA_PATH=/path/to/curio-data
 VAULT_DEPLOY_KEY_PATH=/path/to/vault_deploy_key
 # Vault layout
 VAULT_QUESTIONS_DIR=Learning/Questions
@@ -495,14 +495,14 @@ Prompt templates are written by the architect and handed to the coder verbatim.
 
 **B0 Repo bootstrap** (architect): `.gitignore`, `LICENSE`, `.env.example`, `.gitleaks.toml`,
 `.pre-commit-config.yaml` (gitleaks, ruff), CI workflow (gitleaks job), `README.md` stub,
-`AGENTS.md`, `PLAN.md`, `SECURITY.md`. Public repo `ainwer/lernsystem`.
+`AGENTS.md`, `PLAN.md`, `SECURITY.md`. Public repo `ainwer/curio`.
 - AC: first commit contains `.gitignore`; gitleaks passes on full history; Actions green.
 
 **B1 App skeleton**: `pyproject.toml` + `uv.lock`, `config.py`, `logging.py`, `db.py` with the full
 schema, `main.py`, `base.html` with tab bar, `app.css`, vendored `htmx.min.js` + `sse.js` + KaTeX,
 manifest + icons + `sw.js`, `/healthz`, `Dockerfile` (non-root user, `git`, `openssh-client`), CI job
 (ruff, mypy, pytest).
-- AC: `uv run uvicorn lernsystem.main:create_app --factory` serves an empty Inbox page at 390 px width;
+- AC: `uv run uvicorn curio_app.main:create_app --factory` serves an empty Inbox page at 390 px width;
   `/healthz` → `{"status":"ok"}`; Lighthouse-style PWA basics present (manifest, icons, theme color).
 - Tests: settings load from env; `repr(settings)` and log output never contain secret values;
   migrations idempotent and set `user_version`; health route; exception handler hides details.
