@@ -1,0 +1,6 @@
+<div class="bubble bubble-assistant is-streaming" id="msg-{{ stream_id }}" hx-ext="sse"
+  sse-connect="/questions/{{ question_id }}/messages/{{ stream_id }}/stream" sse-close="done">
+  <div class="bubble-body" sse-swap="token" hx-swap="beforeend"></div>
+  <div hidden sse-swap="done,error" hx-target="#msg-{{ stream_id }}" hx-swap="outerHTML"></div>
+  <div class="typing" aria-hidden="true"><span></span><span></span><span></span></div>
+</div>

@@ -649,3 +649,166 @@ textarea {
   overflow-x: auto;
   overflow-y: hidden;
 }
+/* Gut answer and tutor chat */
+
+.gut-form-card,
+.gut-card,
+.insight-card,
+.question-card {
+  margin-top: 0.75rem;
+}
+
+.gut-form-card p {
+  margin: 0.25rem 0 0.75rem;
+}
+
+.gut-answer {
+  margin: 0;
+  padding: 0.5rem 0.75rem;
+  border-left: 3px solid var(--accent);
+  background: var(--bg);
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+
+.gut-answer > :first-child {
+  margin-top: 0;
+}
+
+.gut-answer > :last-child {
+  margin-bottom: 0;
+}
+
+.chat-log {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: 1rem;
+  margin-bottom: 7.5rem;
+}
+
+.bubble {
+  max-width: 88%;
+  padding: 0.55rem 0.85rem;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  overflow-wrap: anywhere;
+}
+
+.bubble-body > :first-child {
+  margin-top: 0;
+}
+
+.bubble-body > :last-child {
+  margin-bottom: 0;
+}
+
+.bubble-body .katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.bubble-user {
+  align-self: flex-end;
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+}
+
+.bubble-assistant {
+  align-self: flex-start;
+}
+
+.is-streaming .bubble-body {
+  white-space: pre-wrap;
+  min-height: 1.4em;
+}
+
+.is-failed .bubble-extra {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.6rem;
+}
+
+.is-failed .bubble-extra .alert {
+  margin: 0;
+}
+
+.btn-retry {
+  align-self: flex-start;
+}
+
+.typing {
+  display: inline-flex;
+  gap: 4px;
+  margin-top: 0.35rem;
+}
+
+.typing span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  animation: typing 1.2s infinite ease-in-out;
+}
+
+.typing span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes typing {
+  0%,
+  60%,
+  100% {
+    opacity: 0.35;
+    transform: translateY(0);
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(-2px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .typing span {
+    animation: none;
+  }
+}
+
+.composer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: calc(var(--tabbar-height) + env(safe-area-inset-bottom));
+  z-index: 10;
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5rem;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 0.6rem 1rem;
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+}
+
+.composer textarea {
+  min-height: 44px;
+  max-height: calc(6 * 1.5em + 1rem);
+  resize: none;
+  overflow-y: auto;
+}
+
+.composer textarea[disabled],
+.composer button[disabled] {
+  opacity: 0.6;
+}
+
+.composer-send {
+  flex: none;
+  padding: 0.5rem 0.9rem;
+}

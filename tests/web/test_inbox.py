@@ -256,46 +256,6 @@ async def test_vault_retry_error_keeps_banner(
     stray.unlink()
 
 
-def _question_with_sections(vault: VaultStore) -> Question:
-    question = Question(
-        id="q-2026-01-01-invented-markdown",
-        status=Status.INBOX,
-        domain="control-systems",
-        concepts=["invented-loop"],
-        created=NOW,
-        title="Why does an invented coil saturate?",
-        preamble="*Invented hook.*",
-    )
-    question = question.with_gut_answer("Invented gut answer <script>alert(1)</script>")
-    return question
-
-
-def test_question_page_renders_sections_as_markdown(
-    vault_client: TestClient, vault_env: VaultEnv, vault: VaultStore
-) -> None:
-    question = _question_with_sections(vault)
-    path = vault.root / vault.relative_question_path(question.id)
-    path.write_text(render_question(question), encoding="utf-8")
-
-    page = vault_client.get("/questions/q-2026-01-01-invented-markdown")
-
-    assert page.status_code == 200
-    assert "invented coil saturate" in page.text
-    assert "control-systems" in page.text
-    assert ">inbox</span>" in page.text
-    assert "Invented hook." in page.text
-    assert "&lt;script&gt;alert(1)&lt;/script&gt;" in page.text
-
-
-def test_question_page_unknown_is_404(vault_client: TestClient) -> None:
-    response = vault_client.get(
-        "/questions/q-2026-01-01-does-not-exist", headers={"accept": "text/html"}
-    )
-
-    assert response.status_code == 404
-    assert "Not found" in response.text
-
-
 def _run_async(coroutine):
     import asyncio
 

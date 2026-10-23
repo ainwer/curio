@@ -14,10 +14,12 @@ from curio_app.config import Settings, get_settings
 from curio_app.llm.base import LLMClient
 from curio_app.llm.factory import create_llm_client
 from curio_app.logging import configure_logging
+from curio_app.services.streams import StreamRegistry, mark_stale_streams_failed
 from curio_app.vault.git import GitRepo
 from curio_app.vault.store import VaultStore
 from curio_app.vault.writer import VaultWriter
-from curio_app.web.routes import books, generate, health, inbox
+from curio_app.web.markdown import render_markdown
+from curio_app.web.routes import books, generate, health, inbox, questions
 
 logger = logging.getLogger(__name__)
 
@@ -63,6 +65,8 @@ def create_app(settings: Settings | None = None, *, llm: LLMClient | None = None
     conn = db.connect(app_settings.db_path)
     try:
         db.migrate(conn)
+        # Assistant turns left "streaming" by a previous process can never finish.
+        mark_stale_streams_failed(conn)
     finally:
         conn.close()
 
@@ -86,12 +90,16 @@ def create_app(settings: Settings | None = None, *, llm: LLMClient | None = None
 
     app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None, debug=False)
     app.state.settings = app_settings
-    app.state.templates = Jinja2Templates(directory=_TEMPLATES_DIR)
+    templates = Jinja2Templates(directory=_TEMPLATES_DIR)
+    templates.env.filters["markdown"] = render_markdown
+    app.state.templates = templates
     app.state.llm = llm if llm is not None else create_llm_client(app_settings)
     app.state.vault_store = vault_store
     app.state.vault_writer = vault_writer
+    app.state.streams = StreamRegistry()
     app.include_router(health.router)
     app.include_router(inbox.router)
+    app.include_router(questions.router)
     app.include_router(generate.router)
     app.include_router(books.router)
     app.mount("/static", StaticFiles(directory=_STATIC_DIR), name="static")

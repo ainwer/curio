@@ -1,17 +1,16 @@
-"""Inbox page with filters, the vault retry and the read-only question page."""
+"""Inbox page with filters and the vault retry."""
 
 import logging
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, HTTPException, Request, Response
+from fastapi import APIRouter, Depends, Request, Response
 from fastapi.responses import RedirectResponse
 from starlette.templating import Jinja2Templates
 
 from curio_app.domain import Question, Status
-from curio_app.vault.store import QuestionNotFound, VaultStore
+from curio_app.vault.store import VaultStore
 from curio_app.vault.writer import VaultWriteError, VaultWriter
 from curio_app.web.deps import get_templates, get_vault_store, get_vault_writer
-from curio_app.web.markdown import render_markdown
 
 logger = logging.getLogger(__name__)
 
@@ -79,36 +78,6 @@ async def retry_vault_writes(
         response.headers["HX-Redirect"] = "/"
         return response
     return RedirectResponse(url="/", status_code=303)
-
-
-@router.get("/questions/{question_id}")
-async def question_page(
-    request: Request,
-    question_id: str,
-    vault: Annotated[VaultStore, Depends(get_vault_store)],
-    templates: Annotated[Jinja2Templates, Depends(get_templates)],
-) -> Response:
-    """Minimal read-only view of one question until the full flow replaces it."""
-    try:
-        question = vault.get(question_id)
-    except QuestionNotFound as exc:
-        raise HTTPException(status_code=404, detail="Not found") from exc
-    sections = [
-        (section.heading, render_markdown(section.body))
-        for section in question.sections
-        if section.body.strip()
-    ]
-    return templates.TemplateResponse(
-        request=request,
-        name="question.html",
-        context={
-            "active_tab": "inbox",
-            "question": question,
-            "created": question.created.date().isoformat(),
-            "preamble_html": render_markdown(question.preamble),
-            "sections": sections,
-        },
-    )
 
 
 def filter_questions(

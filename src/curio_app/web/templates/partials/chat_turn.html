@@ -1,0 +1,4 @@
+<div class="bubble bubble-user" id="msg-{{ user_message.id }}">
+  <div class="bubble-body">{{ user_message.content | markdown }}</div>
+</div>
+{% include "partials/bubble_live.html" %}

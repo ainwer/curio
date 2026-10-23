@@ -10,6 +10,7 @@ from curio_app.books.store import BookStore
 from curio_app.config import Settings
 from curio_app.db import get_db
 from curio_app.llm.base import LLMClient
+from curio_app.services.streams import StreamRegistry
 from curio_app.vault.store import VaultStore
 from curio_app.vault.writer import VaultWriter
 
@@ -18,6 +19,12 @@ def get_llm(request: Request) -> LLMClient:
     """LLM client built once in ``create_app`` (or injected for tests)."""
     llm: LLMClient = request.app.state.llm
     return llm
+
+
+def get_stream_registry(request: Request) -> StreamRegistry:
+    """Background assistant-turn streams owned by the app."""
+    registry: StreamRegistry = request.app.state.streams
+    return registry
 
 
 def get_vault_store(request: Request) -> VaultStore:
