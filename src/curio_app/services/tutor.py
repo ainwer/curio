@@ -8,6 +8,7 @@ from curio_app.books.search import search
 from curio_app.books.store import BookStore
 from curio_app.domain import Question, Status
 from curio_app.llm.prompts import Excerpt, NoteRef, tutor_context
+from curio_app.vault.format import FormatError, parse_question
 from curio_app.vault.store import VaultStore
 from curio_app.vault.writer import FileChange, VaultWriteError, VaultWriter
 
@@ -40,12 +41,35 @@ class ChatMessage:
 
 
 def effective_status(q: Question, conn: sqlite3.Connection) -> Status:
-    """The visible status: INBOX with a tutor session means a vault draft is pending."""
+    """The visible status: the pending vault draft wins, then the live tutor session.
+
+    The draft (a failed commit attempt) is newer than the vault file, so its
+    own front-matter status is what the user sees.
+    """
+    row = conn.execute("SELECT content FROM vault_drafts WHERE question_id = ?", (q.id,)).fetchone()
+    if row is not None:
+        try:
+            return parse_question(str(row["content"])).status
+        except FormatError:
+            pass
     if q.status is Status.INBOX:
         row = conn.execute("SELECT 1 FROM tutor_sessions WHERE question_id = ?", (q.id,)).fetchone()
         if row is not None:
             return Status.RESEARCHING
     return q.status
+
+
+def effective_question(vault: VaultStore, question_id: str, conn: sqlite3.Connection) -> Question:
+    """The latest question content: the pending vault draft when one exists, else the file."""
+    row = conn.execute(
+        "SELECT content FROM vault_drafts WHERE question_id = ?", (question_id,)
+    ).fetchone()
+    if row is not None:
+        try:
+            return parse_question(str(row["content"]))
+        except FormatError:
+            pass
+    return vault.get(question_id)
 
 
 async def submit_gut_answer(

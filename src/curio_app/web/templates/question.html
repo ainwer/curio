@@ -24,6 +24,29 @@
 
   {% if effective_status.value == 'inbox' %}
   {% include "partials/gut_form.html" %}
+  {% elif effective_status.value == 'researching' and view == 'curate' %}
+  {% with question_id = question.id %}
+  <a class="back-link" href="/questions/{{ question_id }}">&larr; Back to chat</a>
+  <section class="card insight-card">
+    <h3 class="section-title">Answer</h3>
+    <div class="question-section-body">{{ wrapup.answer | markdown }}</div>
+  </section>
+  <section class="card misconception-card">
+    <h3 class="section-title">Where you were wrong</h3>
+    {% if wrapup.misconceptions %}
+    <ul class="misconception-list">
+      {% for item in wrapup.misconceptions %}<li>{{ item }}</li>{% endfor %}
+    </ul>
+    {% else %}
+    <p class="muted">Your gut answer held up.</p>
+    {% endif %}
+  </section>
+  <h3 class="section-title curate-title">Cards</h3>
+  <div class="curate-list">
+    {% for card in wrapup.cards %}{% include "partials/card_draft.html" %}{% endfor %}
+  </div>
+  {% include "partials/curate_footer.html" %}
+  {% endwith %}
   {% elif effective_status.value == 'researching' %}
   {% if vault_warning %}
   <div class="alert" role="alert"><p>Saved locally; the vault sync will be retried from the inbox.</p></div>
@@ -34,6 +57,7 @@
     <blockquote class="gut-answer">{{ gut_answer | markdown }}</blockquote>
   </section>
   {% endif %}
+  {% include "partials/wrapup_zone.html" %}
   {% with question_id = question.id, stream_id = live_stream_id %}
   <div id="chat" class="chat-log">
     {% for message in messages %}{% include "partials/bubble.html" %}{% endfor %}
@@ -42,6 +66,9 @@
   {% include "partials/composer.html" %}
   {% endwith %}
   {% else %}
+  {% if vault_warning %}
+  <div class="alert" role="alert"><p>Saved locally; the vault sync will be retried from the inbox.</p></div>
+  {% endif %}
   {% if gut_answer %}
   <section class="card gut-card">
     <h3 class="section-title">Your gut answer</h3>

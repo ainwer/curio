@@ -812,3 +812,144 @@ textarea {
   flex: none;
   padding: 0.5rem 0.9rem;
 }
+
+/* --- Wrap-up and curation --------------------------------------------------------- */
+
+.btn-busy {
+  display: none;
+  align-items: center;
+}
+
+.btn:disabled .btn-label {
+  display: none;
+}
+
+.btn:disabled .btn-busy {
+  display: inline-flex;
+}
+
+.wrapup-zone {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.wrapup-zone .card-actions .btn {
+  flex: 1;
+}
+
+.back-link {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.chip-accepted {
+  color: var(--ok-text);
+  border-color: var(--ok-border);
+  background: var(--ok-bg);
+}
+
+.card-draft.is-accepted {
+  border-color: var(--accent);
+}
+
+.card-draft.is-discarded {
+  opacity: 0.55;
+  border-style: dashed;
+}
+
+.card-draft-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 0.6rem;
+}
+
+.card-draft-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-bottom: 0.75rem;
+}
+
+.misconception-card ul {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.misconception-card li {
+  margin-bottom: 0.25rem;
+  overflow-wrap: anywhere;
+}
+
+.curate-title {
+  margin-top: 0.5rem;
+}
+
+.curate-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  /* Keep the last card clear of the sticky footer and tab bar. */
+  margin-bottom: calc(var(--tabbar-height) + env(safe-area-inset-bottom) + 8.5rem);
+}
+
+.card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.card-actions .btn,
+.card-actions .curate-footer-btn {
+  flex: 1;
+  min-width: 44px;
+}
+
+.card-actions .btn[disabled] {
+  opacity: 0.6;
+}
+
+.curate-footer {
+  position: fixed;
+  bottom: calc(var(--tabbar-height) + env(safe-area-inset-bottom));
+  left: 0;
+  right: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 0.6rem 1rem;
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+}
+
+.curate-footer form {
+  flex: none;
+}
+
+.curate-footer .btn {
+  min-width: 44px;
+}
+
+.curate-counter {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.curate-counter.is-warn {
+  color: var(--pending-text);
+}
+
+.curate-counter .curate-count {
+  margin: 0;
+}
