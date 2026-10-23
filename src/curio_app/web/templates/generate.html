@@ -3,7 +3,59 @@
 {% block title %}Generate{% endblock %}
 
 {% block content %}
-<div class="empty-state">
-  <p>Coming soon.</p>
+<div class="mode-wrap">
+  <div class="segmented" role="group" aria-label="Source of new questions">
+    <label class="segment">
+      <input type="radio" name="mode-picker" id="pick-source" value="source"{% if mode == "source" %} checked{% endif %}>
+      <span>Source</span>
+    </label>
+    <label class="segment">
+      <input type="radio" name="mode-picker" id="pick-topic" value="topic"{% if mode == "topic" %} checked{% endif %}>
+      <span>Topic</span>
+    </label>
+    <label class="segment">
+      <input type="radio" name="mode-picker" id="pick-bridge" value="bridge"{% if mode == "bridge" %} checked{% endif %}>
+      <span>Bridge</span>
+    </label>
+  </div>
+
+  <form class="mode-form mode-form-source" hx-post="/generate" hx-target="#run" hx-swap="innerHTML">
+    <input type="hidden" name="mode" value="source">
+    {% if book_options %}
+    <label class="field-label" for="chapter_id">Chapter</label>
+    <select id="chapter_id" name="chapter_id">
+      {% for book, chapters in book_options %}
+      <optgroup label="{{ book.title }}">
+        {% for chapter in chapters %}
+        <option value="{{ chapter.id }}"{% if chapter.id == selected_chapter %} selected{% endif %}>Ch. {{ chapter.number }}: {{ chapter.title }}</option>
+        {% endfor %}
+      </optgroup>
+      {% endfor %}
+    </select>
+    {% else %}
+    <p class="muted">No ready books yet. <a href="/books">Upload a book</a> to generate from a chapter, or use Topic or Bridge below.</p>
+    {% endif %}
+    <button class="btn btn-primary" type="submit">Generate questions</button>
+  </form>
+
+  <form class="mode-form mode-form-topic" hx-post="/generate" hx-target="#run" hx-swap="innerHTML">
+    <input type="hidden" name="mode" value="topic">
+    <label class="field-label" for="topic-input">Topic</label>
+    <input id="topic-input" type="text" name="topic" required maxlength="200" placeholder="e.g. Li-ion cell internal resistance">
+    <p class="muted">8&ndash;10 questions ordered from foundational to advanced.</p>
+    <button class="btn btn-primary" type="submit">Generate questions</button>
+  </form>
+
+  <form class="mode-form mode-form-bridge" hx-post="/generate" hx-target="#run" hx-swap="innerHTML">
+    <input type="hidden" name="mode" value="bridge">
+    <label class="field-label" for="focus-input">Focus (optional)</label>
+    <input id="focus-input" type="text" name="focus" maxlength="200" placeholder="e.g. Wireless charging coils">
+    <p class="muted">Uses your knowledge profile.</p>
+    <button class="btn btn-primary" type="submit">Generate questions</button>
+  </form>
 </div>
+
+<section id="run" aria-live="polite">
+  {% if run %}{% include "partials/run.html" %}{% endif %}
+</section>
 {% endblock %}

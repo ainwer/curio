@@ -1,0 +1,41 @@
+{% if suggestion_error %}
+<div class="alert alert-error suggestion-error"><p>{{ suggestion_error }}</p></div>
+{% endif %}
+<article class="suggestion card{% if s.state == "accepted" %} is-added{% endif %}">
+  {% if s.state == "accepted" %}
+  <div class="suggestion-main">
+    <div class="s-body">
+      <div class="s-question">{{ s.question }}</div>
+      <p class="muted s-hook">{{ s.hook }}</p>
+    </div>
+  </div>
+  <div class="s-chips">
+    <span class="chip chip-added">Added</span>
+    <span class="chip">{{ s.domain }}</span>
+    {% for concept in s.concepts %}<span class="chip">{{ concept }}</span>{% endfor %}
+    {% if s.bridge_from %}<span class="chip">Builds on: {{ s.bridge_from }}</span>{% endif %}
+  </div>
+  <div class="s-actions">
+    <a class="btn btn-primary" href="/questions/{{ s.question_id }}">Open</a>
+  </div>
+  {% else %}
+  <div class="suggestion-main">
+    <div class="s-pick">
+      <input class="suggestion-check" type="checkbox" name="suggestion_id" value="{{ s.id }}" aria-label="Select {{ s.question }}">
+    </div>
+    <div class="s-body">
+      <div class="s-question">{{ s.question }}</div>
+      <p class="muted s-hook">{{ s.hook }}</p>
+    </div>
+  </div>
+  <div class="s-chips">
+    <span class="chip">{{ s.domain }}</span>
+    {% for concept in s.concepts %}<span class="chip">{{ concept }}</span>{% endfor %}
+    {% if s.bridge_from %}<span class="chip">Builds on: {{ s.bridge_from }}</span>{% endif %}
+  </div>
+  <div class="s-actions">
+    <button class="btn" hx-post="/suggestions/{{ s.id }}/accept" hx-target="closest .suggestion" hx-swap="outerHTML">Add to inbox</button>
+    <button class="btn" hx-post="/suggestions/{{ s.id }}/dismiss" hx-target="closest .suggestion" hx-swap="outerHTML">Dismiss</button>
+  </div>
+  {% endif %}
+</article>

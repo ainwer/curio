@@ -26,6 +26,7 @@ uv sync                              # install dependencies into .venv
 uv run ruff check . && uv run ruff format --check .
 uv run mypy
 uv run pytest -q
+scripts/dev-vault.sh                 # dev only: create .cache/dev-remote.git + .cache/dev-vault clone
 LLM_PROVIDER=fake DATA_PATH=./.cache/dev-data VAULT_PATH=./.cache/dev-vault \
   uv run uvicorn curio_app.main:create_app --factory --reload
 ```

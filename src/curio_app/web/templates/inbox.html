@@ -3,8 +3,51 @@
 {% block title %}Inbox{% endblock %}
 
 {% block content %}
+{% if drafts %}{% include "partials/draft_banner.html" %}{% endif %}
+
+{% if invalid_files %}
+<details class="alert invalid-alert">
+  <summary>{{ invalid_files|length }} file(s) could not be read</summary>
+  <ul>
+    {% for file in invalid_files %}
+    <li><code>{{ file.path }}</code>: {{ file.error }}</li>
+    {% endfor %}
+  </ul>
+</details>
+{% endif %}
+
+{% if questions %}
+<nav class="chips-row" aria-label="Filter by status">
+  {% for value, label in status_filters %}
+  <a class="chip chip-filter{% if status_filter == value %} is-active{% endif %}" href="/?status={{ value }}{% if domain_filter %}&amp;domain={{ domain_filter }}{% endif %}">{{ label }}</a>
+  {% endfor %}
+</nav>
+<nav class="chips-row" aria-label="Filter by domain">
+  <a class="chip chip-filter{% if not domain_filter %} is-active{% endif %}" href="/?status={{ status_filter }}">All domains</a>
+  {% for domain in domains %}
+  <a class="chip chip-filter{% if domain_filter == domain %} is-active{% endif %}" href="/?status={{ status_filter }}&amp;domain={{ domain }}">{{ domain }}</a>
+  {% endfor %}
+</nav>
+<ul class="stack question-list">
+  {% for question in questions %}
+  <li>
+    <a class="question-row card" href="/questions/{{ question.id }}">
+      <span class="question-row-title">{{ question.title }}</span>
+      <span class="question-row-meta">
+        <span class="chip">{{ question.domain }}</span>
+        <span class="chip chip-status chip-{{ question.status.value }}">{{ question.status.value }}</span>
+        <span class="muted question-date">{{ question.created.date().isoformat() }}</span>
+      </span>
+    </a>
+  </li>
+  {% endfor %}
+</ul>
+{% elif filters_active %}
+<p class="muted">No questions match these filters.</p>
+{% else %}
 <div class="empty-state">
   <p>No questions yet. Generate some to get started.</p>
   <a class="btn btn-primary" href="/generate">Generate questions</a>
 </div>
+{% endif %}
 {% endblock %}

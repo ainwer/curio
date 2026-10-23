@@ -320,3 +320,332 @@ textarea {
   font-size: 0.8rem;
   white-space: nowrap;
 }
+
+/* --- Generate: segmented control + mode forms ------------------------------------ */
+
+.segmented {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  padding: 4px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.segment {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 0.5rem;
+  border-radius: 9px;
+  color: var(--text-muted);
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+}
+
+.segment input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.segment:has(input:checked) {
+  background: var(--accent);
+  color: var(--on-accent);
+  outline: 1px solid var(--accent);
+}
+
+.segment:has(input:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.mode-form {
+  display: none;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.mode-wrap:has(#pick-source:checked) .mode-form-source,
+.mode-wrap:has(#pick-topic:checked) .mode-form-topic,
+.mode-wrap:has(#pick-bridge:checked) .mode-form-bridge {
+  display: flex;
+}
+
+/* --- Generate: run fragment and suggestion cards --------------------------------- */
+
+#run {
+  margin: 0;
+}
+
+.run {
+  margin-top: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.run-loading {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--text-muted);
+}
+
+.run-loading p {
+  margin: 0;
+}
+
+.spinner {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.run-actions {
+  position: sticky;
+  bottom: calc(var(--tabbar-height) + env(safe-area-inset-bottom) + 0.5rem);
+  z-index: 5;
+  margin-top: 0.25rem;
+}
+
+.run-actions .btn {
+  width: 100%;
+  box-shadow: 0 4px 12px rgba(2, 6, 23, 0.18);
+}
+
+.suggestion {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.suggestion.is-added {
+  border-color: var(--ok-border);
+  background: var(--ok-bg);
+}
+
+.suggestion-main {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.s-pick {
+  padding-top: 0.25rem;
+}
+
+.suggestion .suggestion-check,
+.suggestion input[type="checkbox"] {
+  width: 22px;
+  height: 22px;
+  min-height: 22px;
+  accent-color: var(--accent);
+}
+
+.s-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.s-question {
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.s-question .katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.s-hook {
+  margin: 0;
+}
+
+.s-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.chip-added {
+  color: var(--ok-text);
+  border-color: var(--ok-border);
+  background: var(--ok-bg);
+}
+
+.s-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.s-actions .btn {
+  flex: 1;
+  min-width: 44px;
+}
+
+/* --- Inbox ----------------------------------------------------------------------- */
+
+/* One scrollable line per filter group keeps the rows distinguishable on phones. */
+.chips-row {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.4rem;
+  margin: 0 -1rem 0.5rem;
+  padding: 0 1rem 0.25rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.chips-row::-webkit-scrollbar {
+  display: none;
+}
+
+.chips-row .chip {
+  flex: none;
+}
+
+.question-list {
+  list-style: none;
+  margin: 0.75rem 0 0;
+  padding: 0;
+}
+
+.question-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  color: var(--text);
+  text-decoration: none;
+  padding: 0.75rem;
+}
+
+.question-row-title {
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.question-row-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.chip-filter {
+  min-height: 32px;
+  font-size: 0.85rem;
+  text-decoration: none;
+}
+
+.chip-filter.is-active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+}
+
+.chip-status.chip-inbox {
+  color: var(--pending-text);
+  border-color: var(--pending-border);
+  background: var(--pending-bg);
+}
+
+.chip-status.chip-researching {
+  color: var(--accent);
+}
+
+.chip-status.chip-done {
+  color: var(--ok-text);
+  border-color: var(--ok-border);
+  background: var(--ok-bg);
+}
+
+.invalid-alert summary {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.invalid-alert ul {
+  margin: 0.5rem 0 0;
+  padding: 0 0 0 1rem;
+  font-size: 0.85rem;
+}
+
+.invalid-alert code {
+  font-size: 0.8rem;
+}
+
+/* --- Question page ---------------------------------------------------------------- */
+
+.question-page {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.question-title {
+  margin: 0;
+  font-size: 1.25rem;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+.question-meta {
+  margin: 0;
+}
+
+.question-preamble,
+.question-section-body {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.9rem 1rem;
+  overflow-wrap: anywhere;
+}
+
+.question-preamble > :first-child,
+.question-section-body > :first-child {
+  margin-top: 0;
+}
+
+.question-preamble > :last-child,
+.question-section-body > :last-child {
+  margin-bottom: 0;
+}
+
+.question-section h3 {
+  margin: 0 0 0.4rem;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.question-preamble .katex-display,
+.question-section-body .katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+}

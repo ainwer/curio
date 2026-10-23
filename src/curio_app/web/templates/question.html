@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}{{ question.title }}{% endblock %}
+{% block header_title %}Question{% endblock %}
+
+{% block content %}
+<article class="question-page">
+  <p class="chips-row question-meta">
+    <span class="chip chip-status chip-{{ question.status.value }}">{{ question.status.value }}</span>
+    <span class="chip">{{ question.domain }}</span>
+    {% for concept in question.concepts %}<span class="chip">{{ concept }}</span>{% endfor %}
+  </p>
+  <h2 class="question-title">{{ question.title }}</h2>
+  {% if question.source %}
+  <p class="muted">Source: {{ question.source }}</p>
+  {% endif %}
+  {% if preamble_html %}
+  <div class="question-preamble">{{ preamble_html | safe }}</div>
+  {% endif %}
+  {% for heading, body_html in sections %}
+  <section class="question-section">
+    <h3>{{ heading }}</h3>
+    <div class="question-section-body">{{ body_html | safe }}</div>
+  </section>
+  {% endfor %}
+  <p class="muted question-created">Created {{ created }}</p>
+</article>
+{% endblock %}

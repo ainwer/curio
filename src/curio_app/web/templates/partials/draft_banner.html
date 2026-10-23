@@ -1,0 +1,7 @@
+<div class="alert alert-error draft-banner">
+  <p>{{ drafts|length }} change(s) could not be saved to the vault.</p>
+  <p class="muted draft-error">{{ drafts[0].error }}</p>
+  <form hx-post="/vault/retry" hx-target="closest .alert-error" hx-swap="outerHTML">
+    <button class="btn" type="submit">Retry</button>
+  </form>
+</div>

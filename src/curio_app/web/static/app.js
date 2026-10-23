@@ -15,6 +15,17 @@
     }
   }
 
+  function updateSelectedCount() {
+    var badges = document.querySelectorAll("[data-selected-count]");
+    if (!badges.length) {
+      return;
+    }
+    var checked = document.querySelectorAll("input.suggestion-check:checked").length;
+    badges.forEach(function (badge) {
+      badge.textContent = String(checked);
+    });
+  }
+
   function init() {
     renderMath(document.body);
     if ("serviceWorker" in navigator) {
@@ -28,6 +39,13 @@
   document.body.addEventListener("htmx:afterSwap", function (event) {
     if (event.detail && event.detail.target) {
       renderMath(event.detail.target);
+    }
+    updateSelectedCount();
+  });
+  document.addEventListener("change", function (event) {
+    var input = event.target;
+    if (input && input.classList && input.classList.contains("suggestion-check")) {
+      updateSelectedCount();
     }
   });
 })();

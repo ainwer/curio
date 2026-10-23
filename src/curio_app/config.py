@@ -19,6 +19,7 @@ class Settings(BaseSettings):
     vault_path: Path = Path("/vault")
     data_path: Path = Path("/data")
     vault_ssh_key_file: Path = Path("/run/secrets/vault_deploy_key")
+    vault_known_hosts_file: Path | None = None
     vault_questions_dir: str = "Learning/Questions"
     vault_profile_path: str = "Learning/Knowledge-Profile.md"
     vault_git_branch: str = "main"
@@ -42,6 +43,14 @@ class Settings(BaseSettings):
     def _empty_secret_to_none(cls, value: str | None) -> str | None:
         """Treat an empty environment value as not configured."""
         if value is not None and not value.strip():
+            return None
+        return value
+
+    @field_validator("vault_known_hosts_file", mode="before")
+    @classmethod
+    def _empty_path_to_none(cls, value: object) -> object:
+        """Treat an empty environment value as not configured."""
+        if isinstance(value, str) and not value.strip():
             return None
         return value
 
