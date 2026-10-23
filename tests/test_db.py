@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from lernsystem import db
+from curio import db
 
 _TABLES = {
     "books",

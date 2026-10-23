@@ -5,7 +5,7 @@ import sys
 
 from conftest import TEST_SECRET
 
-from lernsystem.logging import RedactingFilter, RedactingFormatter, redact
+from curio.logging import RedactingFilter, RedactingFormatter, redact
 
 
 class _ListHandler(logging.Handler):

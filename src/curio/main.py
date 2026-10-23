@@ -9,10 +9,10 @@ from fastapi.staticfiles import StaticFiles
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.templating import Jinja2Templates
 
-from lernsystem import db
-from lernsystem.config import Settings, get_settings
-from lernsystem.logging import configure_logging
-from lernsystem.web.routes import health, pages
+from curio import db
+from curio.config import Settings, get_settings
+from curio.logging import configure_logging
+from curio.web.routes import health, pages
 
 logger = logging.getLogger(__name__)
 

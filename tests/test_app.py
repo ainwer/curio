@@ -4,8 +4,8 @@ import pytest
 from conftest import TEST_SECRET
 from fastapi.testclient import TestClient
 
-from lernsystem.config import Settings
-from lernsystem.main import create_app
+from curio.config import Settings
+from curio.main import create_app
 
 
 def test_healthz(client: TestClient) -> None:

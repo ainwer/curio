@@ -1,6 +1,6 @@
 {
-  "name": "Lernsystem",
-  "short_name": "Lernsystem",
+  "name": "Curio",
+  "short_name": "Curio",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

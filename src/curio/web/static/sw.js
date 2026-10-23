@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  var CACHE_NAME = "lernsystem-static-v1";
+  var CACHE_NAME = "curio-static-v1";
   var PRECACHE_URLS = [
     "/static/app.css",
     "/static/app.js",

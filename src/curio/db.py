@@ -6,7 +6,7 @@ from pathlib import Path
 
 from fastapi import Request
 
-from lernsystem.config import Settings
+from curio.config import Settings
 
 MIGRATIONS: list[str] = [
     """\

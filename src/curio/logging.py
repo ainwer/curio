@@ -3,7 +3,7 @@
 import logging
 from collections.abc import Iterable
 
-from lernsystem.config import Settings
+from curio.config import Settings
 
 _REDACTED = "***"
 _MIN_SECRET_LENGTH = 4

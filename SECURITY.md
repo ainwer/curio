@@ -34,12 +34,4 @@ A good report helps us respond quickly. Where possible, include:
 - We ask that you give us a reasonable amount of time to fix the issue before
   disclosing it publicly.
 
-## Secrets
-
-This repository must never contain secrets or private data. API keys, the
-Tailscale auth key and the vault deploy key are supplied at runtime through a
-server-side `.env` file and mounted files only. Secret scanning runs as a
-pre-commit hook and in CI (gitleaks). If a secret ever lands in the history,
-it is treated as compromised and rotated; rewriting history is not enough.
-
-Thank you for helping keep Lernsystem and its users safe.
+Thank you for helping keep Curio and its users safe.

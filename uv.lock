@@ -299,7 +299,7 @@ wheels = [
 ]
 
 [[package]]
-name = "lernsystem"
+name = "curio"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [

@@ -2,7 +2,7 @@
 
 import pytest
 
-from lernsystem.config import Settings
+from curio.config import Settings
 
 
 def test_env_vars_load(monkeypatch: pytest.MonkeyPatch, tmp_path) -> None:
