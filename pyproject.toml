@@ -31,6 +31,8 @@ packages = ["src/lernsystem"]
 [tool.ruff]
 line-length = 100
 target-version = "py312"
+# Markdown code blocks are documentation (PLAN.md prompts are verbatim); never reformat them.
+extend-exclude = ["*.md"]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "UP", "B", "SIM", "S", "RUF"]

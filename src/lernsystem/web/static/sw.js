@@ -50,9 +50,18 @@
     if (url.origin !== self.location.origin || !url.pathname.startsWith("/static/")) {
       return;
     }
+    // Stale-while-revalidate: serve the cached copy, refresh it in the background.
     event.respondWith(
-      caches.match(request).then(function (cached) {
-        return cached || fetch(request);
+      caches.open(CACHE_NAME).then(function (cache) {
+        return cache.match(request).then(function (cached) {
+          var network = fetch(request).then(function (response) {
+            if (response.ok) {
+              cache.put(request, response.clone());
+            }
+            return response;
+          });
+          return cached || network;
+        });
       })
     );
   });

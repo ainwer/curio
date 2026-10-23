@@ -1,10 +1,11 @@
 """Tests for the redacting logging filter."""
 
 import logging
+import sys
 
 from conftest import TEST_SECRET
 
-from lernsystem.logging import RedactingFilter, redact
+from lernsystem.logging import RedactingFilter, RedactingFormatter, redact
 
 
 class _ListHandler(logging.Handler):
@@ -77,3 +78,18 @@ def test_filter_ignores_short_secrets() -> None:
     RedactingFilter(["ab"]).filter(record)
 
     assert record.msg == "value ab here"
+
+
+def test_formatter_redacts_tracebacks(secret: str) -> None:
+    formatter = RedactingFormatter("%(message)s", [secret])
+    try:
+        raise RuntimeError(f"failure with {secret}")
+    except RuntimeError:
+        record = logging.getLogger("test").makeRecord(
+            "test", logging.ERROR, __file__, 1, "boom", (), sys.exc_info()
+        )
+
+    output = formatter.format(record)
+
+    assert "RuntimeError" in output
+    assert secret not in output

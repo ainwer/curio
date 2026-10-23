@@ -35,6 +35,17 @@ class RedactingFilter(logging.Filter):
         return True
 
 
+class RedactingFormatter(logging.Formatter):
+    """Redact the final formatted output, including tracebacks added by the formatter."""
+
+    def __init__(self, fmt: str, secrets: Iterable[str]) -> None:
+        super().__init__(fmt)
+        self._secrets = tuple(secrets)
+
+    def format(self, record: logging.LogRecord) -> str:
+        return redact(super().format(record), self._secrets)
+
+
 def configure_logging(settings: Settings) -> None:
     """Install one redacting stream handler on the root logger."""
     for previous in list(_redacting_handlers):
@@ -42,7 +53,7 @@ def configure_logging(settings: Settings) -> None:
         logging.getLogger().removeHandler(previous)
 
     handler = logging.StreamHandler()
-    handler.setFormatter(logging.Formatter(_FORMAT))
+    handler.setFormatter(RedactingFormatter(_FORMAT, settings.secret_values()))
     handler.addFilter(RedactingFilter(settings.secret_values()))
     root = logging.getLogger()
     root.addHandler(handler)
