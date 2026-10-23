@@ -1,0 +1,27 @@
+<div id="wrapup-zone" class="wrapup-zone">
+  {% if zone_error %}
+  <div class="alert alert-error" role="alert"><p>{{ zone_error }}</p></div>
+  {% endif %}
+  {% if has_wrapup %}
+  <div class="card-actions">
+    <a class="btn" href="/questions/{{ question.id }}?view=curate">Review cards</a>
+    <button type="button" class="btn btn-primary" hx-post="/questions/{{ question.id }}/wrapup"
+      hx-target="#wrapup-zone" hx-swap="outerHTML" hx-disabled-elt="this"
+      hx-confirm="Replace the proposed cards?">
+      <span class="btn-label">Wrap up again</span>
+      <span class="btn-busy">Summarizing…</span>
+    </button>
+  </div>
+  {% elif can_wrap %}
+  <button type="button" class="btn btn-primary" hx-post="/questions/{{ question.id }}/wrapup"
+    hx-target="#wrapup-zone" hx-swap="outerHTML" hx-disabled-elt="this">
+    <span class="btn-label">Wrap up</span>
+    <span class="btn-busy">Summarizing…</span>
+  </button>
+  {% else %}
+  <button type="button" class="btn btn-primary" disabled>
+    <span class="btn-label">Wrap up</span>
+  </button>
+  <p class="muted">The tutor has to finish a reply first.</p>
+  {% endif %}
+</div>

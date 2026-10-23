@@ -1,0 +1,45 @@
+{% if run_error and not run %}
+<div class="run">
+  <div class="alert alert-error"><p>{{ run_error }}</p></div>
+</div>
+{% elif run and run.state == "running" %}
+<div class="run" hx-get="/generate/runs/{{ run.id }}" hx-trigger="every 2s" hx-swap="outerHTML">
+  <div class="card run-loading">
+    <span class="spinner" aria-hidden="true"></span>
+    <p>Generating questions&hellip;</p>
+  </div>
+</div>
+{% elif run and run.state == "failed" %}
+<div class="run">
+  <div class="alert alert-error">
+    <p>{{ run.error }}</p>
+    <p><a class="btn" href="/generate">Try again</a></p>
+  </div>
+</div>
+{% elif run %}
+<div class="run">
+  {% if run_error %}
+  <div class="alert alert-error"><p>{{ run_error }}</p></div>
+  {% endif %}
+  {% set new_cards = [] %}
+  {% for s in run.suggestions %}
+  {% if s.state == "new" %}{% set _ = new_cards.append(s) %}{% endif %}
+  {% endfor %}
+  {% if new_cards %}
+  <form class="run-actions" hx-post="/suggestions/accept" hx-target="#run" hx-swap="innerHTML" hx-include="input.suggestion-check:checked">
+    <button class="btn btn-primary" type="submit">Add selected (<span data-selected-count>{{ new_cards|length }}</span>)</button>
+  </form>
+  {% endif %}
+  <div class="stack run-list">
+    {% for s in run.suggestions %}
+    {% include "partials/suggestion.html" %}
+    {% endfor %}
+  </div>
+  {% if not run.suggestions %}
+  <div class="empty-state">
+    <p>All suggestions have been handled.</p>
+    <a class="btn btn-primary" href="/generate">Generate more</a>
+  </div>
+  {% endif %}
+</div>
+{% endif %}

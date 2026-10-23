@@ -1,0 +1,5 @@
+<div id="curate-counter"
+  class="curate-counter{% if accepted_count == 0 or accepted_count > 3 %} is-warn{% endif %}"
+  {% if oob %}hx-swap-oob="true"{% endif %}>
+  <p class="curate-count">{{ accepted_count }} accepted · aim for 2–3</p>
+</div>

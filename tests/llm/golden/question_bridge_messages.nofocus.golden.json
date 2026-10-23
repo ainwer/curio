@@ -1,0 +1,6 @@
+[
+  {
+    "content": "Pick new areas adjacent to the profile.\n\nWrite 5–8 bridge questions. A bridge question connects something the learner does NOT know yet\nto an area the knowledge profile says they know well, so the known area becomes the entry point\n(e.g. \"In <known system>, why does <new concept> force <observable design choice>?\").\nSet bridge_from to the known area each question builds on. Set source to null.",
+    "role": "user"
+  }
+]

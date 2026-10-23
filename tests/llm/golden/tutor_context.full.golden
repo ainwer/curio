@@ -1,0 +1,23 @@
+<question>Why does reverse recovery make converters get hot?</question>
+<concepts>reverse-recovery, switching-losses</concepts>
+<gut_answer>I guess the current flows backwards and heats something.</gut_answer>
+<book_excerpts>
+<excerpt book="Invented Book" chapter="3" section="Diodes">
+Invented excerpt about reverse recovery.
+</excerpt>
+<excerpt book="Invented Book" chapter="7" section="Topologies">
+Invented excerpt about half-bridge topologies.
+</excerpt>
+
+</book_excerpts>
+<vault_notes>
+<note title="Reverse-Recovery">
+Invented note summary.
+</note>
+<note title="Half-Bridge">
+Invented half-bridge notes.
+</note>
+
+</vault_notes>
+
+This is my gut answer above. Start.

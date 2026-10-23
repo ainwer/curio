@@ -1,0 +1,35 @@
+<section id="draft-{{ card.id }}" class="card card-draft is-{{ card.state }}">
+  <div class="card-draft-head">
+    <span class="chip">{{ card.type.value }}</span>
+    {% if card.state == 'accepted' %}
+    <span class="chip chip-accepted">Accepted</span>
+    {% elif card.state == 'discarded' %}
+    <span class="chip chip-discarded">Discarded</span>
+    {% endif %}
+  </div>
+  {% if card.state == 'discarded' %}
+  <p class="muted card-draft-note">This draft is discarded.</p>
+  <div class="card-actions">
+    <button type="button" class="btn" hx-post="/questions/{{ question_id }}/cards/{{ card.id }}/propose"
+      hx-target="#draft-{{ card.id }}" hx-swap="outerHTML" hx-disabled-elt="this">Undo</button>
+  </div>
+  {% else %}
+  <div class="card-draft-body">
+    <div class="question-section-body">{{ card.front | markdown }}</div>
+    <div class="question-section-body">{{ card.back | markdown }}</div>
+    {% if card.source %}
+    <p class="muted">Source: {{ card.source }}</p>
+    {% endif %}
+  </div>
+  <div class="card-actions">
+    {% if card.state != 'accepted' %}
+    <button type="button" class="btn btn-accept" hx-post="/questions/{{ question_id }}/cards/{{ card.id }}/accept"
+      hx-target="#draft-{{ card.id }}" hx-swap="outerHTML" hx-disabled-elt="this">Accept</button>
+    {% endif %}
+    <button type="button" class="btn" hx-post="/questions/{{ question_id }}/cards/{{ card.id }}/edit"
+      hx-target="#draft-{{ card.id }}" hx-swap="outerHTML" hx-disabled-elt="this">Edit</button>
+    <button type="button" class="btn" hx-post="/questions/{{ question_id }}/cards/{{ card.id }}/discard"
+      hx-target="#draft-{{ card.id }}" hx-swap="outerHTML" hx-disabled-elt="this">Discard</button>
+  </div>
+  {% endif %}
+</section>

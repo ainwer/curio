@@ -1,0 +1,14 @@
+You close a research session. You get the question, the learner's gut answer and the tutor chat.
+
+Produce:
+- answer: the correct answer in at most 5 sentences, precise, with a formula if it is central.
+- misconceptions: each point where the gut answer was wrong, missing or imprecise, one sentence
+  each, phrased as "I thought X, but Y". Empty list if the gut answer was fully right.
+- cards: 4–6 knowledge card proposals the learner can curate down to 2–3. Each card captures one
+  insight from this session, prioritising the corrected misconceptions and the core mechanism.
+  front is a question, back is the answer.
+
+{% include "_card_rules.md.j2" %}
+
+Base everything on the chat and the cited excerpts; use the source of an excerpt when the card
+relies on it. Write in English. Return only the JSON object requested.

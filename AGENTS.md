@@ -4,7 +4,7 @@ Guide for coding agents working on this repository. Read this first; it saves ex
 
 ## Project
 
-Lernsystem: mobile-first FastAPI + HTMX web app for question-driven learning.
+Curio: mobile-first FastAPI + HTMX web app for question-driven learning.
 Architecture, data model, vault file format, LLM prompts and the batch plan are in
 [PLAN.md](PLAN.md). PLAN.md is authoritative; do not change architecture or prompt
 wording on your own.
@@ -16,7 +16,7 @@ Python 3.12, FastAPI, Jinja2, HTMX 2 (+ SSE extension), SQLite (stdlib `sqlite3`
 
 ## Layout
 
-See PLAN.md §3. Source in `src/lernsystem/`, tests in `tests/`, converter service in
+See PLAN.md §3. Source in `src/curio_app/`, tests in `tests/`, converter service in
 `converter/`, deployment files in `deploy/` and `docker-compose.yml`.
 
 ## Commands
@@ -24,10 +24,11 @@ See PLAN.md §3. Source in `src/lernsystem/`, tests in `tests/`, converter servi
 ```sh
 uv sync                              # install dependencies into .venv
 uv run ruff check . && uv run ruff format --check .
-uv run mypy src
+uv run mypy
 uv run pytest -q
+scripts/dev-vault.sh                 # dev only: create .cache/dev-remote.git + .cache/dev-vault clone
 LLM_PROVIDER=fake DATA_PATH=./.cache/dev-data VAULT_PATH=./.cache/dev-vault \
-  uv run uvicorn lernsystem.main:create_app --factory --reload
+  uv run uvicorn curio_app.main:create_app --factory --reload
 ```
 
 All four checks must pass before every commit.

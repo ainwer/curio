@@ -1,0 +1,12 @@
+<div class="bubble bubble-{{ message.role }}{% if message.state != 'done' %} is-{{ message.state }}{% endif %}"
+  id="msg-{{ message.id }}">
+  <div class="bubble-body">{{ message.content | markdown }}</div>
+  {% if message.state == 'failed' %}
+  <div class="bubble-extra">
+    <p class="alert alert-error">The tutor reply failed.{% if error_text %} {{ error_text }}{% endif %}</p>
+    <button type="button" class="btn btn-retry"
+      hx-post="/questions/{{ question_id }}/messages/{{ message.id }}/retry"
+      hx-target="#msg-{{ message.id }}" hx-swap="outerHTML">Retry</button>
+  </div>
+  {% endif %}
+</div>

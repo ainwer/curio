@@ -1,0 +1,8 @@
+<form class="composer" id="composer" action="/questions/{{ question_id }}/messages"
+  hx-post="/questions/{{ question_id }}/messages" hx-target="#chat" hx-swap="beforeend"
+  hx-disabled-elt="find textarea, find button">
+  <textarea name="text" rows="1" maxlength="4000" data-autogrow aria-label="Message to the tutor"
+    placeholder="Reply to the tutor…" {% if stream_id %}disabled{% endif %}></textarea>
+  <button type="submit" class="btn btn-primary composer-send" aria-label="Send"
+    {% if stream_id %}disabled{% endif %}>Send</button>
+</form>

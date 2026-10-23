@@ -1,0 +1,8 @@
+<div id="curate-footer" class="curate-footer"{% if oob %} hx-swap-oob="true"{% endif %}>
+  {% with oob=False %}{% include "partials/curate_counter.html" %}{% endwith %}
+  <form method="post" action="/questions/{{ question_id }}/save">
+    <button type="submit" class="btn btn-primary" {% if accepted_count == 0 %}disabled{% endif %}>
+      Save to vault
+    </button>
+  </form>
+</div>

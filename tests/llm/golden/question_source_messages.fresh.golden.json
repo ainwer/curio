@@ -1,0 +1,16 @@
+[
+  {
+    "content": [
+      {
+        "cache": true,
+        "text": "<chapter book=\"Invented Book\" number=\"3\" title=\"One-Way Conduction\">\nInvented chapter text about one-way conduction and reverse recovery.\n</chapter>\n",
+        "type": "text"
+      },
+      {
+        "text": "Write 8–10 question cards grounded in this chapter. Each must be answerable with the chapter's\ncontent plus reasoning, and set source to \"Invented Book, ch. 3\".\nSkip the chapter's trivial definitions; aim at mechanisms, magnitudes and design tradeoffs.",
+        "type": "text"
+      }
+    ],
+    "role": "user"
+  }
+]

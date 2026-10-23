@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block title %}{{ question.title }}{% endblock %}
+{% block header_title %}{{ question.title }}{% endblock %}
+
+{% block content %}
+<article class="question-page{% if effective_status.value == 'researching' %} is-chat{% endif %}">
+  <p class="chips-row question-meta">
+    <span class="chip chip-status chip-{{ effective_status.value }}">{{ effective_status.value }}</span>
+    <span class="chip">{{ question.domain }}</span>
+    {% for concept in question.concepts %}<span class="chip">{{ concept }}</span>{% endfor %}
+  </p>
+  <h2 class="question-title">{{ question.title }}</h2>
+  {% if question.source %}
+  <p class="muted">Source: {{ question.source }}</p>
+  {% endif %}
+  {% if question.preamble.strip() %}
+  <div class="question-preamble">{{ question.preamble | markdown }}</div>
+  {% endif %}
+
+  {% if form_error %}
+  <div class="alert alert-error" role="alert"><p>{{ form_error }}</p></div>
+  {% endif %}
+
+  {% if effective_status.value == 'inbox' %}
+  {% include "partials/gut_form.html" %}
+  {% elif effective_status.value == 'researching' and view == 'curate' %}
+  {% with question_id = question.id %}
+  <a class="back-link" href="/questions/{{ question_id }}">&larr; Back to chat</a>
+  <section class="card insight-card">
+    <h3 class="section-title">Answer</h3>
+    <div class="question-section-body">{{ wrapup.answer | markdown }}</div>
+  </section>
+  <section class="card misconception-card">
+    <h3 class="section-title">Where you were wrong</h3>
+    {% if wrapup.misconceptions %}
+    <ul class="misconception-list">
+      {% for item in wrapup.misconceptions %}<li>{{ item }}</li>{% endfor %}
+    </ul>
+    {% else %}
+    <p class="muted">Your gut answer held up.</p>
+    {% endif %}
+  </section>
+  <h3 class="section-title curate-title">Cards</h3>
+  <div class="curate-list">
+    {% for card in wrapup.cards %}{% include "partials/card_draft.html" %}{% endfor %}
+  </div>
+  {% include "partials/curate_footer.html" %}
+  {% endwith %}
+  {% elif effective_status.value == 'researching' %}
+  {% if vault_warning %}
+  <div class="alert" role="alert"><p>Saved locally; the vault sync will be retried from the inbox.</p></div>
+  {% endif %}
+  {% if gut_answer %}
+  <section class="card gut-card">
+    <h3 class="section-title">Your gut answer</h3>
+    <blockquote class="gut-answer">{{ gut_answer | markdown }}</blockquote>
+  </section>
+  {% endif %}
+  {% include "partials/wrapup_zone.html" %}
+  {% with question_id = question.id, stream_id = live_stream_id %}
+  <div id="chat" class="chat-log">
+    {% for message in messages %}{% include "partials/bubble.html" %}{% endfor %}
+    {% if stream_id %}{% include "partials/bubble_live.html" %}{% endif %}
+  </div>
+  {% include "partials/composer.html" %}
+  {% endwith %}
+  {% else %}
+  {% if vault_warning %}
+  <div class="alert" role="alert"><p>Saved locally; the vault sync will be retried from the inbox.</p></div>
+  {% endif %}
+  {% if gut_answer %}
+  <section class="card gut-card">
+    <h3 class="section-title">Your gut answer</h3>
+    <blockquote class="gut-answer">{{ gut_answer | markdown }}</blockquote>
+  </section>
+  {% endif %}
+  {% if insight %}
+  <section class="card insight-card">
+    <h3 class="section-title">Insight</h3>
+    <div class="question-section-body">{{ insight | markdown }}</div>
+  </section>
+  {% endif %}
+  {% for card in cards %}
+  <section class="card question-card">
+    <p class="chip">{{ card.type.value }}</p>
+    <div class="question-section-body">{{ card.front | markdown }}</div>
+    <div class="question-section-body">{{ card.back | markdown }}</div>
+    {% if card.source %}<p class="muted">Source: {{ card.source }}</p>{% endif %}
+  </section>
+  {% endfor %}
+  {% endif %}
+  <p class="muted question-created">Created {{ created }}</p>
+</article>
+{% endblock %}

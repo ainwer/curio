@@ -1,0 +1,9 @@
+<article class="card book-row"{% if book.state == 'converting' %} hx-get="/books/{{ book.id }}/status" hx-trigger="every 5s" hx-swap="outerHTML"{% endif %}>
+  <div class="book-row-main">
+    <a class="book-row-title" href="/books/{{ book.id }}">{{ book.title }}</a>
+    <span class="chip state-chip state-{{ book.state }}">{{ book.state }}</span>
+  </div>
+  {% if book.state == 'failed' and book.error %}
+  <p class="book-row-error">{{ book.error }}</p>
+  {% endif %}
+</article>

@@ -1,0 +1,9 @@
+<section class="card gut-form-card">
+  <h3 class="section-title">Your gut answer</h3>
+  <p class="muted">Commit to a hunch before you research. The tutor starts from your answer.</p>
+  <form method="post" action="/questions/{{ question.id }}/gut-answer" class="stack">
+    <textarea name="gut_answer" required maxlength="1000" rows="4" autofocus
+      placeholder="What is your first hunch?"></textarea>
+    <button type="submit" class="btn btn-primary">Start research</button>
+  </form>
+</section>
