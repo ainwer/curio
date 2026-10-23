@@ -36,3 +36,30 @@ jobs:
       # secret in any reachable commit counts.
       - name: Scan history for secrets
         run: gitleaks git --no-banner --verbose --redact
+
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v10
+        with:
+          version: "0.13.5"
+          enable-cache: true
+
+      - name: Install dependencies
+        run: uv sync --frozen
+
+      - name: Lint
+        run: uv run ruff check .
+
+      - name: Format check
+        run: uv run ruff format --check .
+
+      - name: Typecheck
+        run: uv run mypy
+
+      - name: Tests
+        run: uv run pytest -q

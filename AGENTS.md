@@ -24,7 +24,7 @@ See PLAN.md §3. Source in `src/lernsystem/`, tests in `tests/`, converter servi
 ```sh
 uv sync                              # install dependencies into .venv
 uv run ruff check . && uv run ruff format --check .
-uv run mypy src
+uv run mypy
 uv run pytest -q
 LLM_PROVIDER=fake DATA_PATH=./.cache/dev-data VAULT_PATH=./.cache/dev-vault \
   uv run uvicorn lernsystem.main:create_app --factory --reload
